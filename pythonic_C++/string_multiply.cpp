@@ -43,15 +43,13 @@ std::string operator* (int k, std::string s) {
     for (unsigned int i = 0; i < k; ++i) {
       t += s;
     }
-     
     return t;
 }
 std::string operator* (std::string s, int k) {
     std::string t;
     for (unsigned int i = 0; i < k; ++i) {
       t += s;
-    }
-     
+    }    
     return t;
 }
 
