@@ -1,3 +1,7 @@
+# script originally taken from here:
+# http://www.geo.ut.ee/aasa/LOOM02331/R_idw_interpolation.html
+# all I've added are the comments to explain it to beginners (like me)
+
 ############ Interpolate air temperature maps for Estonia (12/05/2010 & 19/05/2010) 
 ############create thematic map of differences #################
 
@@ -21,9 +25,6 @@ library(sp)
 # "set of tools for manipulating and reading geographic data, in particular ESRI shapefiles"
 # we use it for readShapePoly()
 library(maptools)
-
-#http://www.geo.ut.ee/aasa/LOOM02331/R_idw_interpolation.html
-setwd("D:/data/Others'UsefulProjects/geo_extrapolation")
 
 # geode weather staions
 # geocode finds latitude and longitude using the Data Science Toolkit or Google Maps
