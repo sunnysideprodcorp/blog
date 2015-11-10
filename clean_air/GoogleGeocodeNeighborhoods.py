@@ -4,6 +4,10 @@ import urllib
 import json
 from time import sleep
 
+# note DON'T DO This
+# use geopy instead
+# https://github.com/geopy/geopy
+
 # first get the data into a dataframe so we can geocode each neighborhood
 geo = read_csv("neighborhoods.csv")
 
