@@ -63,7 +63,9 @@ bad_pairs.groupby('Name_x').count()
 
 
 # MAP
-#Create NYC map
+# Create NYC map
+# Interactive code taken from
+# https://github.com/sunnysideprodcorp/blog/blob/master/clean_air/HistogramAndMapDistanceInspection.py
 map = Basemap(llcrnrlon=-74.3,llcrnrlat=40.5,urcrnrlon=-73.6,urcrnrlat=40.9,
               resolution='i', projection='lcc', lat_0 = 40.5, lon_0 = -74 )
 fig = plt.figure()
