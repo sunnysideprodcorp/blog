@@ -1,0 +1,87 @@
+from pandas import DataFrame, read_csv, concat, merge
+from geopy.distance import great_circle
+from itertools import combinations
+import matplotlib.pyplot as plt
+import numpy as np
+codes = read_csv("neighborhoods.csv")
+coords = read_csv("coords.csv")
+
+result = merge(codes, coords, left_on = 'Descriptive Name', right_on = 'Name')
+coords = result['Coords']
+combos = combinations(coords, 2)
+distance_in_miles = []
+for c in combos:
+    distance_in_miles.append(great_circle(c[0], c[1]).miles)
+
+
+#data = distance_in_miles
+plt.hist(distance_in_miles, bins=np.arange(min(distance_in_miles), max(distance_in_miles) + binwidth, binwidth))
+plt.show()
+
+
+from mpl_toolkits.basemap import Basemap
+import matplotlib.pyplot as plt
+import numpy as np
+
+map = Basemap(llcrnrlon=-74.3,llcrnrlat=40.5,urcrnrlon=-73.6,urcrnrlat=40.9,
+              resolution='i', projection='lcc', lat_0 = 40.5, lon_0 = -74,epsg=4269 )
+
+fig = plt.figure()
+ax = plt.axes()
+
+points_with_annotation = []
+for i in range(100):
+    try:
+        c = coords[i]
+        s = c[1:-1]
+        s = [float(n) for n in  s.split(",")]   
+        x, y = map(s[1], s[0])
+        point, = map.plot(x, y, 'ro', markersize=4)
+
+        annotation = ax.annotate(result['Name'][i],
+                                 xy=(x, y), xycoords='data',
+                                 xytext=(i + 1, i), textcoords='data',
+                                 horizontalalignment="left",
+                                 arrowprops=dict(arrowstyle="simple",
+                                                 connectionstyle="arc3,rad=-0.2"),
+                                 bbox=dict(boxstyle="round", facecolor="w", 
+                                           edgecolor="0.5", alpha=0.9)
+                             )
+        annotation.set_visible(False)
+
+        points_with_annotation.append([point, annotation])
+
+    except:
+        print i
+        break
+    
+    # by default, disable the annotation visibility
+
+def on_move(event):
+    visibility_changed = False
+    for point, annotation in points_with_annotation:
+        should_be_visible = (point.contains(event)[0] == True)
+
+        if should_be_visible != annotation.get_visible():
+            visibility_changed = True
+            annotation.set_visible(should_be_visible)
+
+    if visibility_changed:        
+        plt.draw()
+
+on_move_id = fig.canvas.mpl_connect('motion_notify_event', on_move)
+
+
+#map.fillcontinents(color='coral',lake_color='aqua')
+# http://stackoverflow.com/questions/31549963/better-documentation-for-arcgisimage-basemap-python
+#map.drawcoastlines()
+#map.drawstates()
+#map.drawcountries()
+#map.drawstates()
+map.arcgisimage(service='World_Physical_Map', xpixels = 3000, verbose= True)
+map.drawmapboundary()
+  
+plt.show()
+
+# looking at these things, obviously wrong are:
+# astoria/long island city, washington heights/inwood, jackson heights and elmhurst should be swapped

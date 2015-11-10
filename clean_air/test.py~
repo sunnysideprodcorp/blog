@@ -1,0 +1,7 @@
+from pandas import DataFrame, read_csv
+
+nums = [[i, i+1] for i in range(20)]
+letters = 'a-z'[:20]
+
+df = pandas.DataFrame('nums' = nums, 'letters' = letters)
+print(df)
